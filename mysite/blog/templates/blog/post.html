@@ -1,0 +1,59 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="row medium-8 large-7 columns">
+  {% if this_post %}
+  <div class="blog-post">
+    <h3>{{ this_post.PostTitle }} <small>{{ this_post.PostDate|date:'d-m-Y' }}</small></h3>
+    <img class="thumbnail" src="{{ this_post.PostImageURL }}">
+    <p>{{ this_post.PostText }}</p>
+    <a  class="button secondary" href="mailto:{{ this_post.GuestUserKey.Email }}">Author: {{ this_post.GuestUserKey.FirstName }}</a>
+    {% if allow_like %}
+    <a class="button primary" id="postLike{{ thispost.pk }}" href="like/"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ this_post.like_set.count }}</a>
+    {% else %}
+    <a class="button primary" href="#" disabled><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ this_post.like_set.count }}</a>
+    {% endif %}
+    <a class="button success" href="#comments"><i class="fa fa-comment-o" aria-hidden="true"></i> {{ this_post.comment_set.count }}</a>
+    {% if allow_edit %}
+    <a class="button alert" href="edit/">Edit</a>
+    <a class="button alert" href="delete/">Delete</a>
+    {% endif %}
+    <form method="post" action="comment/">
+      {% csrf_token %}
+      <div class="row">
+        <div class="small-6 large-centered columns">
+          <label>
+            {{ form.CommentText }}
+          </label>
+          <div class="text-center">
+            <button type="submit" class="warning button">Share my comment</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    {% if this_post.comment_set.all %}
+    <h4 id="comments">Comments:</h4>
+    {% for post_com in this_post.comment_set.all %}
+    <div class="row">
+      <div class="small-6 large-centered columns">
+        <blockquote>
+          {{ post_com.CommentText }}
+          <cite>{{ post_com.GuestUserKey.FirstName }}, {{ post_com.CommentDate|date:'d-m-Y H:h' }}</cite>
+          {% if post_com.GuestUserKey.pk == guid %}
+          <a class="button hollow alert" href="comment/{{ post_com.pk }}">Delete</a>
+          {% endif %}
+        </blockquote>
+        <hr />
+      </div>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="blog-post">
+    <h3>No details to show.</h3>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

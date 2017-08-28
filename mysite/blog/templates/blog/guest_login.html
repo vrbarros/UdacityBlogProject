@@ -1,0 +1,76 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+{% if authentication %}
+<h1>
+  Welcome!
+</h1>
+<div class="small-3 small-centered columns">
+  <div class="success callout" id="success" data-closable>
+    <p>
+      You are authorized to post and comment in our blog! ;-)
+    </p>
+    <a class="button success " href="{% url 'blog:index' %}">See all posts</a>
+  </div>
+</div>
+{% endif %}
+{% if not authentication %}
+<h1>
+  Guest login
+</h1>
+<form method="post" action="">
+  {% csrf_token %}
+  {% if form.errors %}
+  <div class="small-3 small-centered columns">
+    <div class="alert callout" id="alert" data-closable>
+      <h5>Oops!</h5>
+      {% for field in form %}
+      <p>
+        {{ field.errors|escape }}
+      </p>
+      {% endfor %}
+      {{ form.non_field_errors }}
+      <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row">
+    <div class="small-6 small-centered columns">
+      <label>Email
+        {{ form.Email }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-6 small-centered columns">
+      <label>Password
+        {{ form.Password }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-6 small-centered columns">
+      <span>
+        Remember me
+      </span>
+    </div>
+    <div class="small-6 small-centered columns">
+      <div class="switch">
+        {{ form.RememberMe }}
+        <label class="switch-paddle" for="{{ form.RememberMe.id_for_label }}">
+          <span class="show-for-sr">I agree with the privacy policy</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="form-buttons">
+    <div class="small-6 small-centered columns">
+      <button type="submit" class="button">Login</button>
+      <a class="button warning" href="{% url 'blog:register' %}">New? Register here!</a>
+    </div>
+  </div>
+</form>
+{% endif %}
+{% endblock %}

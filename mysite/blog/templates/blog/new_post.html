@@ -1,0 +1,68 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>
+  {{ page_title }}
+</h1>
+<form method="post" action="">
+  {% csrf_token %}
+  {% if form.errors %}
+  <div class="small-3 small-centered columns">
+    <div class="alert callout" id="alert" data-closable>
+      <h5>Oops!</h5>
+      {% for field in form %}
+      <p>
+        {{ field.errors|escape }}
+      </p>
+      {% endfor %}
+      {{ form.non_field_errors }}
+      <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row">
+    <div class="small-12 columns">
+      <label>Title
+        {{ form.PostTitle }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 columns">
+      <label>Image
+        {{ form.PostImageURL }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 columns">
+      <label>Content
+        {{ form.PostText }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-6 columns">
+      <span>
+        Post visible?
+      </span>
+    </div>
+    <div class="small-6 columns">
+      <div class="switch">
+        {{ form.PostVisible }}
+        <label class="switch-paddle" for="{{ form.PostVisible.id_for_label }}">
+          <span class="show-for-sr">Post visible?</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="form-buttons">
+    <div class="small-12 columns">
+      <button type="submit" class="success button">Save</button>
+      <a class="button alert" href="/">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

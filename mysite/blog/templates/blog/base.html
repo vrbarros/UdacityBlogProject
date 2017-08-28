@@ -1,0 +1,75 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eskolare Blog</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'blog/images/favicon.png' %}"/>
+    <link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/foundation.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/app.css' %}" />
+    <script src="https://use.fontawesome.com/7360040265.js"></script>
+    <!-- Start of eskolare Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="eskolare.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+/*]]>*/</script>
+<!-- End of eskolare Zendesk Widget script -->
+  </head>
+  <body>
+
+    <!-- Start Top Bar -->
+    <header id="eskolare-header">
+      <div data-sticky-container>
+        <div data-sticky data-sticky-on="small" data-hide-for="medium" data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
+          <div class="title-bar" data-responsive-toggle="eskolare-animated-menu">
+            <div class="title-bar-left">
+              <button class="menu-icon" type="button" data-toggle></button>
+            </div>
+            <div class="title-bar-right">
+              <a href="{% url 'blog:index' %}">
+                <img src="{% static 'blog/images/favicon.png' %}" alt="Eskolare" class="logo-eskolare-small" />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="top-bar" id="eskolare-animated-menu" data-animate="fade-in fade-out" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
+          <div class="top-bar-left">
+            <ul class="dropdown menu" data-dropdown-menu>
+              <a href="{% url 'blog:index' %}" class="logo-eskolare">
+                <img src="{% static 'blog/images/eskolare.png' %}">
+              </a>
+              <li class="has-submenu">
+                <a href="#">Archive</a>
+                <ul class="submenu menu vertical" data-submenu>
+                  <li><a href="#0">Day</a></li>
+                  <li><a href="#0">Month</a></li>
+                  <li><a href="#0">Year</a></li>
+                </ul>
+              </li>
+              <li><a href="{% url 'blog:new' %}">New post</a></li>
+            </ul>
+          </div>
+          <div class="top-bar-right">
+            <ul class="menu">
+              {% if not authentication %}
+              <li><a href="{% url 'blog:login' %}">Login/Register</a></li>
+              {% endif %}
+              {% if authentication %}
+              <li><a href="{% url 'blog:logout' %}">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- End Top Bar -->
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <script src="{% static 'blog/js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'blog/js/vendor/what-input.js' %}"></script>
+    <script src="{% static 'blog/js/vendor/foundation.js' %}"></script>
+    <script src="{% static 'blog/js/app.js' %}"></script>
+  </body>
+</html>

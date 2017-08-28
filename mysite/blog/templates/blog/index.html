@@ -1,0 +1,46 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<!-- We can now combine rows and columns when there's only one column in that row -->
+<div class="row medium-8 large-7 columns">
+
+{% if latest_blog_list %}
+    {% for thispost in latest_blog_list %}
+    <div class="blog-post">
+      <h3>{{ thispost.PostTitle }} <small>{{ thispost.PostDate|date:'d-m-Y' }}</small></h3>
+      <img class="thumbnail" src="{{ thispost.PostImageURL }}">
+      <p>{{ thispost.PostText }}</p>
+      <a  class="button secondary" href="mailto:{{ thispost.GuestUserKey.Email }}">Author: {{ thispost.GuestUserKey.FirstName }}</a>
+      {% if not guid == thispost.GuestUserKey.pk %}
+      <a class="button primary" id="postLike{{ thispost.pk }}" href="{{ thispost.pk }}/like/"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ thispost.like_set.count }}</a>
+      {% else %}
+      <a class="button primary" href="#" disabled><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ thispost.like_set.count }}</a>
+      {% endif %}
+      <a class="button success"  data-open="postComment{{ thispost.pk }}"><i class="fa fa-comment-o" aria-hidden="true"></i> {{ thispost.comment_set.count }}</a>
+      <a  class="button warning" href="{{ thispost.pk }}">View the full post</a>
+      <div class="reveal" id="postComment{{ thispost.pk }}" data-reveal>
+        {% if not thispost.comment_set.all %}
+        <h4>Not comments yet...</h4>
+        {% else %}
+        <h4>Comments:</h4>
+          {% for post_com in thispost.comment_set.all %}
+          <blockquote>
+            {{ post_com.CommentText }}
+            <cite>{{ post_com.GuestUserKey.FirstName }}, {{ post_com.CommentDate|date:'d-m-Y H:h' }}</cite>
+          </blockquote>
+          <hr />
+          {% endfor %}
+        {% endif %}
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="blog-post">
+      <h3>No blog posts in the past<small>15 days</small></h3>
+    </div>
+{% endif %}
+</div>
+{% endblock %}

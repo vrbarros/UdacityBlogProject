@@ -1,0 +1,80 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>
+  New guest register
+</h1>
+<form method="post" action="">
+  {% csrf_token %}
+  {% if form.errors %}
+  <div class="small-3 small-centered columns">
+    <div class="alert callout" id="alert" data-closable>
+      <h5>Oops!</h5>
+      {% for field in form %}
+      <p>
+        {{ field.errors|escape }}
+      </p>
+      {% endfor %}
+      {{ form.non_field_errors }}
+      <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row">
+    <div class="small-6 columns">
+
+      <label>First name
+        {{ form.FirstName }}
+      </label>
+    </div>
+    <div class="small-6 columns">
+
+      <label>Last name
+        {{ form.LastName }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 columns">
+      <label>Email
+        {{ form.Email }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-6 columns">
+      <label>Password
+        {{ form.Password }}
+      </label>
+    </div>
+    <div class="small-6 columns">
+      <label>Re-type password
+        {{ form.VerifyPassword }}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-6 columns">
+      <span>
+        I agree with Privacy Policy of this blog
+      </span>
+    </div>
+    <div class="small-6 columns">
+      <div class="switch">
+        {{ form.TermAgree }}
+        <label class="switch-paddle" for="{{ form.TermAgree.id_for_label }}">
+          <span class="show-for-sr">I agree with the privacy policy</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="form-buttons">
+    <div class="small-12 columns">
+      <button type="submit" class="success button">Save</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

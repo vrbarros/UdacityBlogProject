@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Questrial');
+
+h1, h2, h3, h4, h5, h6, a {
+  font-family: 'Questrial', sans-serif !important;
+}
+body {
+  background-color: #f2f2f2;
+}
+.top-bar, .top-bar ul {
+  background: #183a4a !important;
+}
+
+.title-bar {
+  background-color: #17242e !important;
+}
+
+.dropdown.menu > li.is-dropdown-submenu-parent > a::after{
+    border-color: #4263c8 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}
+
+.submenu.menu.vertical {
+  border: none;
+}
+
+.top-bar-left, .top-bar-right {
+  vertical-align: middle;
+}
+
+.logo-eskolare {
+  width: 150px;
+}
+
+@media (max-width: 640px) {
+  .logo-eskolare {
+    display: none !important;
+  }
+}
+
+.logo-eskolare-small {
+  width: 20%;
+  padding-right: 5px;
+}
+
+.menu a {
+  color: #ffffff;
+}
+
+.menu a:hover {
+  color: #37cfad;
+  font-weight: bold;
+}
+
+.dropdown.menu .is-active > a {
+  color: #4263c8;
+  font-weight: bold;
+}
+
+.sticky {
+	z-index: 1;
+	width: 100%;
+}
+
+h5 {
+  font-family: 'Questrial', sans-serif;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  margin: 25px;
+  font-size: 200%;
+  font-weight: bold;
+  color: #183a4a;
+}
+h5 {
+  font-weight: bold;
+  color: red;
+}
+
+#alert {
+  text-align: center;
+}
+
+#form-buttons {
+  text-align: center;
+}
