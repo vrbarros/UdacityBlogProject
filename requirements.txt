@@ -31,4 +31,4 @@ snowballstemmer==1.2.1
 twilio==6.3.dev0
 virtualenv==15.1.0
 Werkzeug==0.12.1
-whitenoise==2.0.6
+whitenoise==3.3.0
