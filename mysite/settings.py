@@ -26,7 +26,7 @@ SECRET_KEY = 'qe=xn06phh#is79y7z%-wwvm(^c+wxr*1n0q744@_@8lqug-tm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['udacityblogproject.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
