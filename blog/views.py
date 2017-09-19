@@ -267,7 +267,8 @@ def comment_delete(request, post_id, comment_id):
             return HttpResponseRedirect('/blog/login/')
 
         remove_comment = Comment.objects.get(pk=comment_id)
-        remove_comment.delete()
+        if remove_comment.GuestUserKey_id == int(request.COOKIES.get('GUID')):
+            remove_comment.delete()
 
         return HttpResponseRedirect('/blog/'+post_id+'/#comments')
 
@@ -296,11 +297,14 @@ def edit_post(request, post_id):
         if form.is_valid():
 
             update_post = Post.objects.get(pk=post_id)
-            update_post.PostTitle = form.cleaned_data['PostTitle']
-            update_post.PostImageURL = form.cleaned_data['PostImageURL']
-            update_post.PostText = form.cleaned_data['PostText']
-            update_post.PostVisible = form.cleaned_data['PostVisible']
-            update_post.save()
+
+            if update_post is not None:
+                if update_post.GuestUserKey_id == int(request.COOKIES.get('GUID')):
+                    update_post.PostTitle = form.cleaned_data['PostTitle']
+                    update_post.PostImageURL = form.cleaned_data['PostImageURL']
+                    update_post.PostText = form.cleaned_data['PostText']
+                    update_post.PostVisible = form.cleaned_data['PostVisible']
+                    update_post.save()
 
             return HttpResponseRedirect('/blog/')
 
@@ -334,16 +338,35 @@ def like_post(request, post_id):
         return HttpResponseRedirect('/blog/login/')
 
     if post_id:
+
+        guid = int(request.COOKIES.get('GUID'))
+        isnotuser_post = Post.objects.get(pk=post_id)
+
         try:
-            new_like = Like(
-                LikeDate=datetime.datetime.now(),
-                GuestUserKey_id=int(request.COOKIES.get('GUID')),
-                PostKey_id=post_id
+            wasnotlikedbefore_post = Like.objects.get(
+                PostKey_id=post_id,
+                GuestUserKey_id=guid
                 )
-            new_like.save()
         except Exception as e:
-            return HttpResponseRedirect(
-                request.META.get('HTTP_REFERER')+'#postLike'+post_id)
+            wasnotlikedbefore_post = None
         else:
-            return HttpResponseRedirect(
-                request.META.get('HTTP_REFERER')+'#postLike'+post_id)
+            pass
+
+        if isnotuser_post.GuestUserKey_id is not guid:
+            if wasnotlikedbefore_post is None:
+                try:
+                    new_like = Like(
+                        LikeDate=datetime.datetime.now(),
+                        GuestUserKey_id=int(request.COOKIES.get('GUID')),
+                        PostKey_id=post_id
+                        )
+                    new_like.save()
+                except Exception as e:
+                    return HttpResponseRedirect(
+                        request.META.get('HTTP_REFERER')+'#postLike'+post_id)
+                else:
+                    return HttpResponseRedirect(
+                        request.META.get('HTTP_REFERER')+'#postLike'+post_id)
+            else:
+                return HttpResponseRedirect(
+                    request.META.get('HTTP_REFERER')+'#postLike'+post_id)
