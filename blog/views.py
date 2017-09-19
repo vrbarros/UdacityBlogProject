@@ -275,7 +275,6 @@ def comment_delete(request, post_id, comment_id):
 
 def comment_edit(request, post_id, comment_id):
     """URL: blog/(post_id)/comment/edit/(comment_id) ."""
-
     template = loader.get_template('blog/comment_edit.html')
 
     if not authentication(request):
@@ -319,6 +318,13 @@ def delete_post(request, post_id):
         return HttpResponseRedirect('/blog/login/')
 
     remove_post = Post.objects.get(pk=post_id)
+
+    """This function check if the User owns
+    the post that is trying to edit"""
+    if remove_post.GuestUserKey_id is not int(request.COOKIES.get('GUID')):
+        return HttpResponseRedirect(
+            request.META.get('HTTP_REFERER'))
+
     remove_post.delete()
 
     return HttpResponseRedirect('/blog/')
@@ -339,6 +345,8 @@ def edit_post(request, post_id):
             update_post = Post.objects.get(pk=post_id)
 
             if update_post is not None:
+                """This function check if the User owns
+                the post that is trying to edit"""
                 if update_post.GuestUserKey_id == int(request.COOKIES.get('GUID')):
                     update_post.PostTitle = form.cleaned_data['PostTitle']
                     update_post.PostImageURL = form.cleaned_data['PostImageURL']
@@ -357,7 +365,20 @@ def edit_post(request, post_id):
             return HttpResponse(template.render(context, request))
 
     else:
-        view_post = Post.objects.get(pk=post_id)
+
+        try:
+            view_post = Post.objects.get(pk=post_id)
+        except Exception as e:
+            return HttpResponseRedirect('/blog/')
+        else:
+            pass
+
+        """This function check if the User owns
+        the post that is trying to edit"""
+        if view_post.GuestUserKey_id is not int(request.COOKIES.get('GUID')):
+            return HttpResponseRedirect(
+                request.META.get('HTTP_REFERER'))
+
         form = NewPostForm(initial={
             'PostTitle': view_post.PostTitle,
             'PostImageURL': view_post.PostImageURL,
