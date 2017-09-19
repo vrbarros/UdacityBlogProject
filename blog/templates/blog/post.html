@@ -40,7 +40,8 @@
           {{ post_com.CommentText }}
           <cite>{{ post_com.GuestUserKey.FirstName }}, {{ post_com.CommentDate|date:'d-m-Y H:h' }}</cite>
           {% if post_com.GuestUserKey.pk == guid %}
-          <a class="button hollow alert" href="comment/{{ post_com.pk }}">Delete</a>
+          <a class="button hollow warning" href="comment/edit/{{ post_com.pk }}">Edit</a>
+          <a class="button hollow alert" href="comment/delete/{{ post_com.pk }}">Delete</a>
           {% endif %}
         </blockquote>
         <hr />

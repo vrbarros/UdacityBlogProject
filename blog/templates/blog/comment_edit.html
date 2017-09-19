@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="row medium-8 large-7 columns">
+  <h3>Edit your comment</h3>
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="row">
+      <div class="small-6 large-centered columns">
+        <label>
+          {{ form.CommentText }}
+        </label>
+        <div class="text-center">
+          <button type="submit" class="warning button">Edit my comment</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+{% endblock %}

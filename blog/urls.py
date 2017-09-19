@@ -28,8 +28,11 @@ urlpatterns = [
     # ex: /1/comment/
     url(r'^(?P<post_id>[0-9]+)/comment/$', views.comment_post, name='comment'),
     # ex: /1/comment/delete/
-    url(r'^(?P<post_id>[0-9]+)/comment/(?P<comment_id>[0-9]+)/$', \
+    url(r'^(?P<post_id>[0-9]+)/comment/delete/(?P<comment_id>[0-9]+)/$', \
         views.comment_delete, name='comment_delete'),
+    # ex: /1/comment/delete/
+    url(r'^(?P<post_id>[0-9]+)/comment/edit/(?P<comment_id>[0-9]+)/$', \
+        views.comment_edit, name='comment_edit'),
     # ex: /1/delete/
     url(r'^(?P<post_id>[0-9]+)/delete/$', views.delete_post, name='delete'),
     # ex: /1/edit/

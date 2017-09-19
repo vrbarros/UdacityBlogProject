@@ -262,7 +262,7 @@ def comment_post(request, post_id):
 
 
 def comment_delete(request, post_id, comment_id):
-        """URL: blog/(post_id)/comment/(comment_id) ."""
+        """URL: blog/(post_id)/comment/delete/(comment_id) ."""
         if not authentication(request):
             return HttpResponseRedirect('/blog/login/')
 
@@ -271,6 +271,46 @@ def comment_delete(request, post_id, comment_id):
             remove_comment.delete()
 
         return HttpResponseRedirect('/blog/'+post_id+'/#comments')
+
+
+def comment_edit(request, post_id, comment_id):
+    """URL: blog/(post_id)/comment/edit/(comment_id) ."""
+
+    template = loader.get_template('blog/comment_edit.html')
+
+    if not authentication(request):
+        return HttpResponseRedirect('/blog/login/')
+
+    guid = int(request.COOKIES.get('GUID'))
+
+    try:
+        edit_comment = Comment.objects.get(
+            pk=comment_id,
+            GuestUserKey_id=guid
+            )
+    except Exception as e:
+        raise
+    else:
+        pass
+
+    if request.method == 'GET':
+        form = CommentForm(initial={
+            'CommentText': edit_comment.CommentText,
+            })
+        context = {
+            'authentication': authentication(request),
+            'form': form,
+        }
+        return HttpResponse(template.render(context, request))
+    elif request.method == 'POST':
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            if edit_comment is not None:
+                if edit_comment.GuestUserKey_id == guid:
+                    edit_comment.CommentText = form.cleaned_data['CommentText']
+                    edit_comment.save()
+                    return HttpResponseRedirect('/blog/'+post_id+'/#comments')
 
 
 def delete_post(request, post_id):
